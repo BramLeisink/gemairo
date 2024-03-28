@@ -164,7 +164,7 @@ class _SubjectStatisticsView extends State<SubjectStatisticsView> {
 
     return Scaffold(
         appBar: GemairoAppBar(
-          title: widget.subject.name,
+          title: Text(widget.subject.name),
         ),
         body: BottomBanner(
           child: ListView(children: [

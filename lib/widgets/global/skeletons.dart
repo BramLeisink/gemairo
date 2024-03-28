@@ -85,7 +85,8 @@ class ScaffoldSkeleton extends StatelessWidget {
       this.onRefresh,
       this.backgroundColor,
       this.sliverAppBar,
-      this.bottomNavigationBar});
+      this.bottomNavigationBar,
+      this.injectOverlap = false});
 
   final SliverAppBar? sliverAppBar;
   final PreferredSizeWidget? appBar;
@@ -94,6 +95,7 @@ class ScaffoldSkeleton extends StatelessWidget {
   final Color? backgroundColor;
   // final bool showAds = false;
   final Widget? bottomNavigationBar;
+  final bool injectOverlap;
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +115,11 @@ class ScaffoldSkeleton extends StatelessWidget {
                         : ScrollDecelerationRate.normal)
                 : null,
             slivers: [
+              if (injectOverlap)
+                SliverOverlapInjector(
+                  handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                ),
               if (sliverAppBar != null)
                 DefaultTextStyle(
                     maxLines: 2,

@@ -116,7 +116,7 @@ class _CareerOverview extends State<CareerOverview> {
     return ScaffoldSkeleton(
         appBar: GemairoAppBar(
             enableYearSwitcher: false,
-            title: AppLocalizations.of(context)!.searchStatistics),
+            title: Text(AppLocalizations.of(context)!.searchStatistics)),
         onRefresh: () async {
           await acP.account.api.refreshAll(acP.person);
           acP.changeAccount(null);

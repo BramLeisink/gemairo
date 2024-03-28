@@ -196,7 +196,6 @@ class _SettingsView extends State<SettingsView> {
               config.swipeNavigation = value;
               config.save();
               setState(() {});
-              showRestartDialog();
               Gemairo.of(context).update();
             })),
         ListTile(
