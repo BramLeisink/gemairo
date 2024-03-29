@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:gemairo/apis/account_manager.dart';
 import 'package:gemairo/hive/adapters.dart';
+import 'package:gemairo/hive/extentions.dart';
 
 import 'package:gemairo/screens/login.dart';
 import 'package:gemairo/screens/settings.dart';
@@ -178,9 +179,11 @@ class AccountSwitcher extends StatelessWidget {
                                     .getActive()
                                     .activeProfile!
                                     .uuid),
-                            title: Text(person.middleName.isNotEmpty
-                                ? "${person.firstName} ${person.middleName} ${person.lastName}"
-                                : "${person.firstName} ${person.lastName}"),
+                            title: Text([
+                              person.firstName,
+                              person.middleName,
+                              person.lastName
+                            ].nonNulls.join(" ")),
                             leading: CircleAvatar(
                                 radius: 25,
                                 child: ClipOval(

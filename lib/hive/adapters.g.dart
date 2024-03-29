@@ -116,8 +116,8 @@ class PersonAdapter extends TypeAdapter<Person> {
       id: fields[2] as int,
       firstName: fields[0] as String,
       lastName: fields[1] as String,
+      middleName: fields[7] as String?,
       profilePicture: fields[3] as String?,
-      middleName: fields[7] as String,
     )
       ..rawSchoolYears = (fields[4] as List).cast<SchoolYear>()
       ..calendarEvents = (fields[5] as List).cast<CalendarEvent>()
