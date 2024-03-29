@@ -178,8 +178,9 @@ class AccountSwitcher extends StatelessWidget {
                                     .getActive()
                                     .activeProfile!
                                     .uuid),
-                            title:
-                                Text("${person.firstName} ${person.lastName}"),
+                            title: Text(person.middleName.isNotEmpty
+                                ? "${person.firstName} ${person.middleName} ${person.lastName}"
+                                : "${person.firstName} ${person.lastName}"),
                             leading: CircleAvatar(
                                 radius: 25,
                                 child: ClipOval(

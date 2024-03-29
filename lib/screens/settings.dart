@@ -478,6 +478,7 @@ class _PersonConfig extends State<PersonConfig> {
                     if (image != null) {
                       widget.person.profilePicture =
                           base64Encode(await image.readAsBytes());
+                      widget.person.save();
                       setState(() {});
                       widget.callback();
                       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -694,7 +695,9 @@ class _PersonConfigCarouselState extends State<PersonConfigCarousel> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("${person.firstName} ${person.lastName}"),
+                          Text(person.middleName.isNotEmpty
+                              ? "${person.firstName} ${person.middleName} ${person.lastName}"
+                              : "${person.firstName} ${person.lastName}"),
                           InkWell(
                             onTap: () {
                               if (person.parentAccount!.apiType ==

@@ -226,6 +226,7 @@ class MagisterApi extends Magister {
             id: res["Persoon"]["Id"],
             firstName:
                 res["Persoon"]["Roepnaam"] ?? res["Persoon"]["Voorletters"],
+            middleName: res["Persoon"]["Tussenvoegsel"],
             lastName: res["Persoon"]["Achternaam"]));
         break;
       case AccountTypes.parent:
@@ -237,6 +238,7 @@ class MagisterApi extends Magister {
           await initPerson(Person(
               id: child["Id"],
               firstName: child["Roepnaam"] ?? child["Voorletters"],
+              middleName: child["Tussenvoegsel"],
               lastName: child["Achternaam"]));
         }
         break;

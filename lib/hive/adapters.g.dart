@@ -117,6 +117,7 @@ class PersonAdapter extends TypeAdapter<Person> {
       firstName: fields[0] as String,
       lastName: fields[1] as String,
       profilePicture: fields[3] as String?,
+      middleName: fields[7] as String,
     )
       ..rawSchoolYears = (fields[4] as List).cast<SchoolYear>()
       ..calendarEvents = (fields[5] as List).cast<CalendarEvent>()
@@ -126,7 +127,7 @@ class PersonAdapter extends TypeAdapter<Person> {
   @override
   void write(BinaryWriter writer, Person obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.firstName)
       ..writeByte(1)
@@ -140,7 +141,9 @@ class PersonAdapter extends TypeAdapter<Person> {
       ..writeByte(5)
       ..write(obj.calendarEvents)
       ..writeByte(6)
-      ..write(obj.config);
+      ..write(obj.config)
+      ..writeByte(7)
+      ..write(obj.middleName);
   }
 
   @override

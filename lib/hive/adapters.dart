@@ -117,6 +117,8 @@ class Person {
   @HiveField(6)
   PersonConfig config = PersonConfig();
   List<Filter> activeFilters = [];
+  @HiveField(7)
+  String middleName = "";
 
   List<SchoolYear> get schoolYears =>
       rawSchoolYears.where((sY) => sY.isEnabled).toList();
@@ -138,6 +140,7 @@ class Person {
       {required this.id,
       required this.firstName,
       this.lastName = "",
+      this.middleName = "",
       this.profilePicture});
 }
 
