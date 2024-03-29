@@ -106,9 +106,11 @@ class ScaffoldSkeleton extends StatelessWidget {
       body: BottomBanner(
         isEnabled: false,
         child: RefreshIndicator.adaptive(
-          edgeOffset: NestedScrollView.sliverOverlapAbsorberHandleFor(context)
-                  .layoutExtent ??
-              44,
+          edgeOffset: (injectOverlap
+                  ? NestedScrollView.sliverOverlapAbsorberHandleFor(context)
+                      .layoutExtent
+                  : 0) ??
+              0,
           onRefresh: onRefresh ?? () => Future(() {}),
           notificationPredicate: (notificationPredicate) =>
               onRefresh != null ? true : false,
