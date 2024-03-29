@@ -20,7 +20,6 @@ import 'package:gemairo/hive/extentions.dart';
 import 'package:gemairo/screens/login.dart';
 import 'package:gemairo/widgets/ads.dart';
 import 'package:gemairo/widgets/appbar.dart';
-import 'package:gemairo/widgets/global/skeletons.dart';
 import 'package:gemairo/widgets/navigation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:in_app_review/in_app_review.dart';

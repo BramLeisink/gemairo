@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gemairo/widgets/ads.dart';
 
@@ -100,20 +99,20 @@ class ScaffoldSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        primary: appBar != null,
-        appBar: appBar,
-        bottomNavigationBar: bottomNavigationBar,
-        backgroundColor: backgroundColor,
-        body: BottomBanner(
-          isEnabled: false,
+      primary: appBar != null,
+      appBar: appBar,
+      bottomNavigationBar: bottomNavigationBar,
+      backgroundColor: backgroundColor,
+      body: BottomBanner(
+        isEnabled: false,
+        child: RefreshIndicator.adaptive(
+          edgeOffset: NestedScrollView.sliverOverlapAbsorberHandleFor(context)
+                  .layoutExtent ??
+              44,
+          onRefresh: onRefresh ?? () => Future(() {}),
+          notificationPredicate: (notificationPredicate) =>
+              onRefresh != null ? true : false,
           child: CustomScrollView(
-            physics: onRefresh != null
-                ? BouncingScrollPhysics(
-                    parent: const AlwaysScrollableScrollPhysics(),
-                    decelerationRate: Platform.isAndroid
-                        ? ScrollDecelerationRate.fast
-                        : ScrollDecelerationRate.normal)
-                : null,
             slivers: [
               if (injectOverlap)
                 SliverOverlapInjector(
@@ -122,12 +121,9 @@ class ScaffoldSkeleton extends StatelessWidget {
                 ),
               if (sliverAppBar != null)
                 DefaultTextStyle(
-                    maxLines: 2,
-                    style: const TextStyle(overflow: TextOverflow.ellipsis),
-                    child: sliverAppBar!),
-              if (onRefresh != null)
-                CupertinoSliverRefreshControl(
-                  onRefresh: onRefresh,
+                  maxLines: 2,
+                  style: const TextStyle(overflow: TextOverflow.ellipsis),
+                  child: sliverAppBar!,
                 ),
               children.isNotEmpty
                   ? SliverList.builder(
@@ -144,14 +140,17 @@ class ScaffoldSkeleton extends StatelessWidget {
                   : SliverFillRemaining(
                       hasScrollBody: false,
                       child: Center(
-                          child: Icon(
-                        const IconData(0xf201, fontFamily: "Gemairo"),
-                        size: 64 * .8,
-                        color: Theme.of(context).colorScheme.surfaceVariant,
-                      )),
-                    )
+                        child: Icon(
+                          const IconData(0xf201, fontFamily: "Gemairo"),
+                          size: 64 * .8,
+                          color: Theme.of(context).colorScheme.surfaceVariant,
+                        ),
+                      ),
+                    ),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
