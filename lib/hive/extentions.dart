@@ -22,7 +22,7 @@ extension Unique<E, Id> on List<E> {
 
 /// nonNulls is only available in SDK >= 3.0.0
 extension NullableIterable<T> on Iterable<T?> {
-  Iterable<T> get nonNulls => where((e) => e != null) as Iterable<T>;
+  Iterable<T> get nonNulls => where((e) => e != null).cast<T>();
 }
 
 extension StringExtension on String {

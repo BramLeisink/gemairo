@@ -103,6 +103,7 @@ class _SettingsReminder extends State<SettingsReminder> {
                               );
                             }
 
+                            if (!context.mounted) return;
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
