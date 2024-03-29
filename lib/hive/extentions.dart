@@ -20,6 +20,11 @@ extension Unique<E, Id> on List<E> {
   }
 }
 
+/// nonNulls is only available in SDK >= 3.0.0
+extension NullableIterable<T> on Iterable<T?> {
+  Iterable<T> get nonNulls => where((e) => e != null) as Iterable<T>;
+}
+
 extension StringExtension on String {
   String capitalize() {
     return length > 0 ? "${this[0].toUpperCase()}${substring(1)}" : "";

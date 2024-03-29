@@ -695,9 +695,11 @@ class _PersonConfigCarouselState extends State<PersonConfigCarousel> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(person.middleName.isNotEmpty
-                              ? "${person.firstName} ${person.middleName} ${person.lastName}"
-                              : "${person.firstName} ${person.lastName}"),
+                          Text([
+                            person.firstName,
+                            person.middleName,
+                            person.lastName
+                          ].nonNulls.join(" ")),
                           InkWell(
                             onTap: () {
                               if (person.parentAccount!.apiType ==
