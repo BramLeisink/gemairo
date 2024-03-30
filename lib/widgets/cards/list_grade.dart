@@ -255,6 +255,9 @@ class _GradeInformation extends State<GradeInformation> {
       warnings.add(AppLocalizations.of(context)!.warningfilterActive);
     }
 
+    final AccountProvider acP =
+        Provider.of<AccountProvider>(context, listen: false);
+
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       ListTile(
         title: Text(widget.grade.subject.name),
@@ -482,6 +485,7 @@ class _GradeInformation extends State<GradeInformation> {
                     value: widget.grade.isEnabled,
                     onChanged: (value) {
                       widget.grade.isEnabled = value;
+                      acP.account.save();
                       setState(() {});
                       Provider.of<AccountProvider>(context, listen: false)
                           .changeAccount(null);
@@ -500,9 +504,6 @@ class _GradeInformation extends State<GradeInformation> {
                         setState(() {
                           isRefreshing = true;
                         });
-                        final AccountProvider acP =
-                            Provider.of<AccountProvider>(context,
-                                listen: false);
                         await acP.account.api
                             .refreshGrade(acP.person, widget.grade);
                         acP.account.save();

@@ -117,6 +117,8 @@ class Person {
   @HiveField(6)
   PersonConfig config = PersonConfig();
   List<Filter> activeFilters = [];
+  @HiveField(7)
+  String? middleName;
 
   List<SchoolYear> get schoolYears =>
       rawSchoolYears.where((sY) => sY.isEnabled).toList();
@@ -138,6 +140,7 @@ class Person {
       {required this.id,
       required this.firstName,
       this.lastName = "",
+      this.middleName,
       this.profilePicture});
 }
 
@@ -433,6 +436,8 @@ class Config extends HiveObject {
   List<GradeListBadges> activeBadges = [];
   @HiveField(10, defaultValue: true)
   bool autoScrollCarousel = true;
+  @HiveField(11, defaultValue: true)
+  bool swipeNavigation = true;
 }
 
 @HiveType(typeId: 15)

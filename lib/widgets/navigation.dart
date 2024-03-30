@@ -153,31 +153,38 @@ class GemairoNavigationBar extends StatelessWidget {
 }
 
 class ScreensSwitch extends StatelessWidget {
-  const ScreensSwitch({super.key, required this.index});
+  const ScreensSwitch(
+      {super.key,
+      required this.index,
+      this.swipeEnabled = true,
+      this.controller,
+      this.onChanged,
+      this.direction = Axis.horizontal});
+
   final int index;
+  final bool swipeEnabled;
+  final Axis direction;
+  final PageController? controller;
+  final void Function(int newIndex)? onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          return FadeTransition(opacity: animation, child: child);
-        },
-        child: Builder(
-          key: ValueKey<int>(index),
-          builder: (context) {
-            switch (index) {
-              case 0:
-                return const SchoolYearStatisticsView();
-              case 1:
-                return const SubjectsListView();
-              case 2:
-                return const SearchView();
-              default:
-                return const SchoolYearStatisticsView();
-            }
-          },
-        ));
+    bool enableSwipe =
+        swipeEnabled && config.swipeNavigation && controller != null;
+
+    return PageView.builder(
+        controller: controller,
+        itemCount: 3,
+        onPageChanged: (index) => onChanged?.call(index),
+        physics: !enableSwipe ? const NeverScrollableScrollPhysics() : null,
+        scrollDirection: direction,
+        itemBuilder: (context, index) {
+          return const [
+            SchoolYearStatisticsView(),
+            SubjectsListView(),
+            SearchView()
+          ][index];
+        });
   }
 }
 

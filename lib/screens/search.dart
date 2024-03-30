@@ -64,6 +64,7 @@ class _SearchView extends State<SearchView> {
         });
 
     return ScaffoldSkeleton(
+      injectOverlap: true,
       onRefresh: () async {
         AccountProvider acP =
             Provider.of<AccountProvider>(context, listen: false);

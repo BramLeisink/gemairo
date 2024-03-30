@@ -88,8 +88,21 @@ class CarouselCard extends StatefulWidget {
 
 class _CarouselCard extends State<CarouselCard> {
   int current = 0;
-  final CarouselController controller = CarouselController();
-  final ScrollController scrollController = ScrollController();
+  late final CarouselController controller;
+  late final ScrollController scrollController;
+
+  @override
+  initState() {
+    controller = CarouselController();
+    scrollController = ScrollController();
+    super.initState();
+  }
+
+  @override
+  dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

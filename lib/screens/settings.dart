@@ -4,7 +4,6 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:gemairo/apis/ads.dart';
-import 'package:gemairo/widgets/ads.dart';
 import 'package:gemairo/widgets/global/skeletons.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:gemairo/apis/magister.dart';
@@ -77,6 +76,23 @@ class _SettingsView extends State<SettingsView> {
           builder: (context) => const Start(),
         ));
       });
+    }
+
+    void showRestartDialog() {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                actionsAlignment: MainAxisAlignment.start,
+                title: Text(AppLocalizations.of(context)!.restartRequired),
+                content:
+                    Text(AppLocalizations.of(context)!.restartRequiredExpl),
+                actions: [
+                  FilledButton.icon(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.check),
+                      label: Text(AppLocalizations.of(context)!.gContinue))
+                ],
+              ));
     }
 
     return ScaffoldSkeleton(
@@ -166,6 +182,18 @@ class _SettingsView extends State<SettingsView> {
                 Text(AppLocalizations.of(context)!.carouselAutoscrollExpl),
             onChanged: ((value) {
               config.autoScrollCarousel = value;
+              config.save();
+              setState(() {});
+              showRestartDialog();
+              Gemairo.of(context).update();
+            })),
+        SwitchListTile(
+            value: config.swipeNavigation,
+            title: Text(AppLocalizations.of(context)!.swipeNav),
+            secondary: const Icon(Icons.swipe),
+            subtitle: Text(AppLocalizations.of(context)!.swipeNavExpl),
+            onChanged: ((value) {
+              config.swipeNavigation = value;
               config.save();
               setState(() {});
               Gemairo.of(context).update();
@@ -321,7 +349,7 @@ class _SettingsView extends State<SettingsView> {
           onTap: () async {
             await Ads.instance?.checkGDPRConsent();
           },
-          title: Text("GDPR"),
+          title: const Text("GDPR"),
           leading: const Icon(Icons.ads_click),
           trailing: const CircleAvatar(child: Icon(Icons.navigate_next)),
         ),
@@ -336,7 +364,7 @@ class _SettingsView extends State<SettingsView> {
         ListTile(
             onTap: () => launchUrl(Uri.parse("https://discord.gg/uZ7whYj"),
                 mode: LaunchMode.externalApplication),
-            title: Text("Discord"),
+            title: const Text("Discord"),
             subtitle: Text(AppLocalizations.of(context)!.settingsDiscordExpl),
             leading: const Icon(Icons.discord),
             trailing: const CircleAvatar(child: Icon(Icons.open_in_new))),
@@ -450,6 +478,7 @@ class _PersonConfig extends State<PersonConfig> {
                     if (image != null) {
                       widget.person.profilePicture =
                           base64Encode(await image.readAsBytes());
+                      widget.person.save();
                       setState(() {});
                       widget.callback();
                       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -666,7 +695,11 @@ class _PersonConfigCarouselState extends State<PersonConfigCarousel> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("${person.firstName} ${person.lastName}"),
+                          Text([
+                            person.firstName,
+                            person.middleName,
+                            person.lastName
+                          ].nonNulls.join(" ")),
                           InkWell(
                             onTap: () {
                               if (person.parentAccount!.apiType ==

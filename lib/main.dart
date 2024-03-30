@@ -6,7 +6,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,7 +21,6 @@ import 'package:gemairo/screens/login.dart';
 import 'package:gemairo/widgets/ads.dart';
 import 'package:gemairo/widgets/appbar.dart';
 import 'package:gemairo/widgets/navigation.dart';
-import 'package:gemairo/widgets/ratelimit.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:provider/provider.dart';
@@ -40,11 +39,13 @@ Future<void> initHive() async {
   if (!Hive.isAdapterRegistered(14)) Hive.registerAdapter(ConfigAdapter());
 
   if (!Hive.isAdapterRegistered(11)) Hive.registerAdapter(SchoolYearAdapter());
-  if (!Hive.isAdapterRegistered(10))
+  if (!Hive.isAdapterRegistered(10)) {
     Hive.registerAdapter(SchoolQuarterAdapter());
+  }
   if (!Hive.isAdapterRegistered(9)) Hive.registerAdapter(SubjectAdapter());
-  if (!Hive.isAdapterRegistered(12))
+  if (!Hive.isAdapterRegistered(12)) {
     Hive.registerAdapter(CalendarEventAdapter());
+  }
   if (!Hive.isAdapterRegistered(7)) Hive.registerAdapter(GradeAdapter());
 
   if (!Hive.isAdapterRegistered(1)) Hive.registerAdapter(AccountAdapter());
@@ -53,12 +54,15 @@ Future<void> initHive() async {
   if (!Hive.isAdapterRegistered(4)) Hive.registerAdapter(ApiStorageAdapter());
 
   if (!Hive.isAdapterRegistered(2)) Hive.registerAdapter(AccountTypesAdapter());
-  if (!Hive.isAdapterRegistered(3))
+  if (!Hive.isAdapterRegistered(3)) {
     Hive.registerAdapter(AccountAPITypesAdapter());
-  if (!Hive.isAdapterRegistered(15))
+  }
+  if (!Hive.isAdapterRegistered(15)) {
     Hive.registerAdapter(GradeListBadgesAdapter());
-  if (!Hive.isAdapterRegistered(13))
+  }
+  if (!Hive.isAdapterRegistered(13)) {
     Hive.registerAdapter(CalendarEventTypesAdapter());
+  }
   if (!Hive.isAdapterRegistered(8)) Hive.registerAdapter(GradeTypeAdapter());
 }
 
@@ -136,77 +140,80 @@ class GemairoState extends State<Gemairo> {
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
-        builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-      ColorScheme lightColorScheme;
-      ColorScheme darkColorScheme;
-      if (lightDynamic != null &&
-          darkDynamic != null &&
-          config.useMaterialYou) {
-        //Using Material You colors set by Android S+ devices
-        lightColorScheme = lightDynamic.harmonized();
-        darkColorScheme = darkDynamic.harmonized();
-      } else {
-        //Not using Material You colors set by Android S+ devices
-        lightColorScheme = ColorScheme.fromSeed(
-          seedColor: Color(config.activeMaterialYouColorInt),
-        ).harmonized();
-        darkColorScheme = ColorScheme.fromSeed(
-          seedColor: Color(config.activeMaterialYouColorInt),
-          brightness: Brightness.dark,
-        ).harmonized();
-      }
+      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+        ColorScheme lightColorScheme;
+        ColorScheme darkColorScheme;
+        if (lightDynamic != null &&
+            darkDynamic != null &&
+            config.useMaterialYou) {
+          //Using Material You colors set by Android S+ devices
+          lightColorScheme = lightDynamic.harmonized();
+          darkColorScheme = darkDynamic.harmonized();
+        } else {
+          //Not using Material You colors set by Android S+ devices
+          lightColorScheme = ColorScheme.fromSeed(
+            seedColor: Color(config.activeMaterialYouColorInt),
+          ).harmonized();
+          darkColorScheme = ColorScheme.fromSeed(
+            seedColor: Color(config.activeMaterialYouColorInt),
+            brightness: Brightness.dark,
+          ).harmonized();
+        }
 
-      ThemeData theme({bool useDarkMode = false}) {
-        ColorScheme colorScheme =
-            useDarkMode ? darkColorScheme : lightColorScheme;
-        return ThemeData(
-            brightness: useDarkMode ? Brightness.dark : Brightness.light,
-            colorScheme: colorScheme,
-            platform: (Platform.isLinux || Platform.isMacOS)
-                ? TargetPlatform.android
-                : null,
-            useMaterial3: true,
-            tooltipTheme: TooltipThemeData(
-              textStyle: TextStyle(color: colorScheme.onBackground),
-              decoration: BoxDecoration(
-                border: Border.fromBorderSide(
-                    BorderSide(color: colorScheme.outline, width: 1)),
-                color: colorScheme.background,
-                borderRadius: const BorderRadius.all(Radius.circular(4)),
+        ThemeData theme({bool useDarkMode = false}) {
+          ColorScheme colorScheme =
+              useDarkMode ? darkColorScheme : lightColorScheme;
+          return ThemeData(
+              brightness: useDarkMode ? Brightness.dark : Brightness.light,
+              colorScheme: colorScheme,
+              platform: (Platform.isLinux || Platform.isMacOS)
+                  ? TargetPlatform.android
+                  : null,
+              useMaterial3: true,
+              tooltipTheme: TooltipThemeData(
+                textStyle: TextStyle(color: colorScheme.onBackground),
+                decoration: BoxDecoration(
+                  border: Border.fromBorderSide(
+                      BorderSide(color: colorScheme.outline, width: 1)),
+                  color: colorScheme.background,
+                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                ),
               ),
-            ),
-            badgeTheme: BadgeThemeData(
-                textColor: colorScheme.onPrimaryContainer,
-                backgroundColor: colorScheme.primaryContainer),
-            snackBarTheme: SnackBarThemeData(
-                backgroundColor: colorScheme.surfaceVariant,
-                closeIconColor: colorScheme.onSurfaceVariant,
-                contentTextStyle:
-                    TextStyle(color: colorScheme.onSurfaceVariant),
-                actionBackgroundColor: colorScheme.primary));
-      }
+              badgeTheme: BadgeThemeData(
+                  textColor: colorScheme.onPrimaryContainer,
+                  backgroundColor: colorScheme.primaryContainer),
+              snackBarTheme: SnackBarThemeData(
+                  backgroundColor: colorScheme.surfaceVariant,
+                  closeIconColor: colorScheme.onSurfaceVariant,
+                  contentTextStyle:
+                      TextStyle(color: colorScheme.onSurfaceVariant),
+                  actionBackgroundColor: colorScheme.primary));
+        }
 
-      return ChangeNotifierProvider(
+        return ChangeNotifierProvider(
           create: (context) => AccountProvider(),
           child: MaterialApp(
-              navigatorKey: navigatorKey,
-              scaffoldMessengerKey: rootScaffoldMessengerKey,
-              title: 'Gemairo',
-              debugShowCheckedModeBanner: false,
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: config.usedLocaleCode != null
-                  ? Locale(config.usedLocaleCode!)
-                  : null,
-              theme: theme(),
-              darkTheme: theme(useDarkMode: true),
-              themeMode: config.autoDarkMode
-                  ? ThemeMode.system
-                  : config.darkMode
-                      ? ThemeMode.dark
-                      : ThemeMode.light,
-              home: const Start()));
-    });
+            navigatorKey: navigatorKey,
+            scaffoldMessengerKey: rootScaffoldMessengerKey,
+            title: 'Gemairo',
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: config.usedLocaleCode != null
+                ? Locale(config.usedLocaleCode!)
+                : null,
+            theme: theme(),
+            darkTheme: theme(useDarkMode: true),
+            themeMode: config.autoDarkMode
+                ? ThemeMode.system
+                : config.darkMode
+                    ? ThemeMode.dark
+                    : ThemeMode.light,
+            home: Start(key: ValueKey(config.hashCode)),
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -220,23 +227,17 @@ class Start extends StatefulWidget {
 }
 
 class _Start extends State<Start> {
-  int screenIndex = 0;
-
-  void handleScreenChanged(int selectedScreen) {
-    setState(() {
-      screenIndex = selectedScreen;
-    });
-  }
+  late final ValueNotifier<int> screenIndex;
+  late final PageController controller;
 
   @override
   void initState() {
-    super.initState();
+    screenIndex = ValueNotifier(0);
+    controller = PageController(
+      initialPage: screenIndex.value,
+    );
 
-    // AccountProvider acP = Provider.of<AccountProvider>(context, listen: false);
-    // FirebaseAnalytics.instance.setUserProperty(
-    //   name: 'api_provider',
-    //   value: acP.account.apiType.toString(),
-    // );
+    super.initState();
 
     if (AccountManager().personList.isNotEmpty &&
         AccountManager().getActive().profiles.isNotEmpty) {
@@ -248,6 +249,23 @@ class _Start extends State<Start> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       checkReview();
     });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  void handleScreenChanged(int selectedScreen, {bool wasSwiped = false}) {
+    if (selectedScreen != screenIndex.value) {
+      screenIndex.value = selectedScreen;
+      if (!wasSwiped) {
+        controller.animateToPage(selectedScreen,
+            duration: const Duration(milliseconds: 300),
+            curve: Easing.standard);
+      }
+    }
   }
 
   checkReview() {
@@ -325,50 +343,103 @@ class _Start extends State<Start> {
         return const LoginView();
       }
 
-      if (constraints.maxWidth < 450) {
-        return Scaffold(
-          appBar: GemairoAppBar(
-            title: screenIndex == 2
-                ? AppLocalizations.of(context)?.searchView
-                : null,
-          ),
-          body: BottomBanner(child: ScreensSwitch(index: screenIndex)),
-          bottomNavigationBar: GemairoNavigationBar(
-            onSelectItem: handleScreenChanged,
-            screenIndex: screenIndex,
-          ),
-        );
-      } else {
-        return Scaffold(
-          body: SafeArea(
-            bottom: false,
-            top: false,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: constraints.maxWidth < 900
-                        ? GemairoNavigationRail(
-                            onSelectItem: handleScreenChanged,
-                            selectedIndex: screenIndex,
+      String? getAppBarTitle(BuildContext context, {required int index}) {
+        switch (index) {
+          case 0:
+            return AppLocalizations.of(context)?.yearView;
+          case 1:
+            return AppLocalizations.of(context)?.subjectsView;
+          case 2:
+            return AppLocalizations.of(context)?.searchView;
+          default:
+            return null;
+        }
+      }
+
+      return Scaffold(
+        body: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (constraints.maxWidth >= 450)
+              Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: ValueListenableBuilder(
+                  valueListenable: screenIndex,
+                  builder: (context, value, _) {
+                    return constraints.maxWidth < 900
+                        ? DecoratedBox(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.outline,
+                              ),
+                            ),
+                            child: GemairoNavigationRail(
+                              onSelectItem: handleScreenChanged,
+                              selectedIndex: value,
+                            ),
                           )
                         : GemairoNavigationDrawer(
                             onSelectItem: handleScreenChanged,
-                            selectedIndex: screenIndex,
-                          )),
-                if (constraints.maxWidth < 900)
-                  const VerticalDivider(thickness: 1, width: 1),
-                Expanded(
-                    child: Scaffold(
-                        appBar: const GemairoAppBar(),
-                        body: BottomBanner(
-                            child: ScreensSwitch(index: screenIndex)))),
-              ],
+                            selectedIndex: value,
+                          );
+                  },
+                ),
+              ),
+            Expanded(
+              child: BottomBanner(
+                isEnabled: constraints.maxWidth >= 450,
+                child: NestedScrollView(
+                  headerSliverBuilder:
+                      (BuildContext context, bool innerBoxIsScrolled) {
+                    return <Widget>[
+                      SliverOverlapAbsorber(
+                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                            context),
+                        sliver: GemairoAppBar(
+                          forceElevated: innerBoxIsScrolled,
+                          title: ValueListenableBuilder(
+                            valueListenable: screenIndex,
+                            builder: (context, value, _) {
+                              return Text(getAppBarTitle(context,
+                                  index: screenIndex.value)!);
+                            },
+                          ),
+                        ),
+                      ),
+                    ];
+                  },
+                  body: Builder(
+                    builder: (context) {
+                      return ScreensSwitch(
+                        key: ValueKey(config.swipeNavigation),
+                        controller: controller,
+                        index: screenIndex.value,
+                        swipeEnabled: (constraints.maxWidth < 450),
+                        direction: (constraints.maxWidth < 450)
+                            ? Axis.horizontal
+                            : Axis.vertical,
+                        onChanged: (index) =>
+                            handleScreenChanged(index, wasSwiped: true),
+                      );
+                    },
+                  ),
+                ),
+              ),
             ),
-          ),
-        );
-      }
+          ],
+        ),
+        bottomNavigationBar: constraints.maxWidth < 450
+            ? ValueListenableBuilder(
+                valueListenable: screenIndex,
+                builder: (context, value, _) {
+                  return GemairoNavigationBar(
+                    onSelectItem: handleScreenChanged,
+                    screenIndex: value,
+                  ) as Widget;
+                },
+              )
+            : null,
+      );
     });
   }
 }

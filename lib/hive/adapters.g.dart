@@ -116,6 +116,7 @@ class PersonAdapter extends TypeAdapter<Person> {
       id: fields[2] as int,
       firstName: fields[0] as String,
       lastName: fields[1] as String,
+      middleName: fields[7] as String?,
       profilePicture: fields[3] as String?,
     )
       ..rawSchoolYears = (fields[4] as List).cast<SchoolYear>()
@@ -126,7 +127,7 @@ class PersonAdapter extends TypeAdapter<Person> {
   @override
   void write(BinaryWriter writer, Person obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.firstName)
       ..writeByte(1)
@@ -140,7 +141,9 @@ class PersonAdapter extends TypeAdapter<Person> {
       ..writeByte(5)
       ..write(obj.calendarEvents)
       ..writeByte(6)
-      ..write(obj.config);
+      ..write(obj.config)
+      ..writeByte(7)
+      ..write(obj.middleName);
   }
 
   @override
@@ -512,13 +515,14 @@ class ConfigAdapter extends TypeAdapter<Config> {
       ..activeBadges = fields[9] == null
           ? [GradeListBadges.weight]
           : (fields[9] as List).cast<GradeListBadges>()
-      ..autoScrollCarousel = fields[10] == null ? true : fields[10] as bool;
+      ..autoScrollCarousel = fields[10] == null ? true : fields[10] as bool
+      ..swipeNavigation = fields[11] == null ? true : fields[11] as bool;
   }
 
   @override
   void write(BinaryWriter writer, Config obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.enableNotifications)
       ..writeByte(1)
@@ -540,7 +544,9 @@ class ConfigAdapter extends TypeAdapter<Config> {
       ..writeByte(9)
       ..write(obj.activeBadges)
       ..writeByte(10)
-      ..write(obj.autoScrollCarousel);
+      ..write(obj.autoScrollCarousel)
+      ..writeByte(11)
+      ..write(obj.swipeNavigation);
   }
 
   @override
