@@ -171,11 +171,11 @@ class GemairoState extends State<Gemairo> {
                   : null,
               useMaterial3: true,
               tooltipTheme: TooltipThemeData(
-                textStyle: TextStyle(color: colorScheme.onBackground),
+                textStyle: TextStyle(color: colorScheme.onSurface),
                 decoration: BoxDecoration(
                   border: Border.fromBorderSide(
                       BorderSide(color: colorScheme.outline, width: 1)),
-                  color: colorScheme.background,
+                  color: colorScheme.surface,
                   borderRadius: const BorderRadius.all(Radius.circular(4)),
                 ),
               ),
@@ -183,7 +183,7 @@ class GemairoState extends State<Gemairo> {
                   textColor: colorScheme.onPrimaryContainer,
                   backgroundColor: colorScheme.primaryContainer),
               snackBarTheme: SnackBarThemeData(
-                  backgroundColor: colorScheme.surfaceVariant,
+                  backgroundColor: colorScheme.surfaceContainerHighest,
                   closeIconColor: colorScheme.onSurfaceVariant,
                   contentTextStyle:
                       TextStyle(color: colorScheme.onSurfaceVariant),

@@ -100,7 +100,7 @@ class _SubjectsListView extends State<SubjectsListView> {
                       child: CircleAvatar(
                         backgroundColor: Colors.transparent,
                         foregroundColor:
-                            Theme.of(context).colorScheme.onBackground,
+                            Theme.of(context).colorScheme.onSurface,
                         child: Icon(
                           subject.grades.sufficientSafety <
                                   config.sufficientFrom
@@ -114,7 +114,7 @@ class _SubjectsListView extends State<SubjectsListView> {
                       )),
                 CircleAvatar(
                     backgroundColor: Colors.transparent,
-                    foregroundColor: Theme.of(context).colorScheme.onBackground,
+                    foregroundColor: Theme.of(context).colorScheme.onSurface,
                     child: const Icon(Icons.navigate_next)),
               ],
             ),

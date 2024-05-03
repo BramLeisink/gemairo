@@ -69,34 +69,36 @@ class BarChartSubjectsAverage extends StatelessWidget {
               barTouchData: BarTouchData(
                 touchCallback: (p0, p1) {},
                 touchTooltipData: BarTouchTooltipData(
-                    tooltipHorizontalAlignment: FLHorizontalAlignment.center,
-                    tooltipMargin: 5,
-                    fitInsideHorizontally: true,
-                    // fitInsideVertically: true,
-                    getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                      return BarTooltipItem(
-                        '${subjects[group.x].name}: ',
-                        TextStyle(
-                          color: Theme.of(context).colorScheme.onBackground,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(text: rod.toY.displayNumber()),
-                        ],
-                      );
-                    },
-                    tooltipPadding:
-                        const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                    tooltipRoundedRadius: 4,
-                    tooltipBorder: BorderSide(
-                        color: Theme.of(context).colorScheme.outline, width: 1),
-                    tooltipBgColor: Theme.of(context).colorScheme.background),
+                  tooltipHorizontalAlignment: FLHorizontalAlignment.center,
+                  tooltipMargin: 5,
+                  fitInsideHorizontally: true,
+                  // fitInsideVertically: true,
+                  getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                    return BarTooltipItem(
+                      '${subjects[group.x].name}: ',
+                      TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(text: rod.toY.displayNumber()),
+                      ],
+                    );
+                  },
+                  tooltipPadding:
+                      const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  tooltipRoundedRadius: 4,
+                  tooltipBorder: BorderSide(
+                      color: Theme.of(context).colorScheme.outline, width: 1),
+                  getTooltipColor: (line) =>
+                      Theme.of(context).colorScheme.surface,
+                ),
               ),
               titlesData: FlTitlesData(
                 show: true,
-                rightTitles: AxisTitles(
+                rightTitles: const AxisTitles(
                   sideTitles: SideTitles(showTitles: false),
                 ),
-                topTitles: AxisTitles(
+                topTitles: const AxisTitles(
                   sideTitles: SideTitles(showTitles: false),
                 ),
                 bottomTitles: AxisTitles(
@@ -132,7 +134,7 @@ class BarChartSubjectsAverage extends StatelessWidget {
                 show: false,
               ),
               barGroups: barData,
-              gridData: FlGridData(
+              gridData: const FlGridData(
                   show: true, horizontalInterval: 2, verticalInterval: 1),
             )));
   }

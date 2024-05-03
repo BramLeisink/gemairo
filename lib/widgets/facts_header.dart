@@ -52,27 +52,33 @@ class _FactsHeader extends State<FactsHeader> {
                         : widget.grades.average.displayNumber()),
               )),
         ),
-        if (Ads.instance != null)
-          StaggeredGridTile.count(
-            crossAxisCellCount: 2,
-            mainAxisCellCount: 1,
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: (((MediaQuery.of(context).size.width - 38) / 2)
-                          .isNegative)
-                      ? 0
-                      : (MediaQuery.of(context).size.width - 38) / 2,
-                  minHeight: double.infinity,
-                  maxHeight: double.infinity,
-                ),
-                child: const Advertisement(
-                  size: AdSize.fluid,
-                ),
-              ),
-            ),
-          ),
+
+        // Deze advertentie is leuk, maar helaas zorgt het ervoor dat de header 
+        // niet meer goed werkt op te kleine of the grote schermen. Ook is de 
+        // advertentie zo klein dat het niet bijzonder veel zin heeft. Hij staat
+        // daarom voorlopig uit.
+
+        // if (Ads.instance != null)
+        //   StaggeredGridTile.count(
+        //     crossAxisCellCount: 2,
+        //     mainAxisCellCount: 1,
+        //     child: Align(
+        //       alignment: Alignment.centerRight,
+        //       child: ConstrainedBox(
+        //         constraints: BoxConstraints(
+        //           maxWidth: (((MediaQuery.of(context).size.width - 38) / 2)
+        //                   .isNegative)
+        //               ? 0
+        //               : (MediaQuery.of(context).size.width - 38) / 2,
+        //           minHeight: double.infinity,
+        //           maxHeight: double.infinity,
+        //         ),
+        //         child: const Advertisement(
+        //           size: AdSize.fluid,
+        //         ),
+        //       ),
+        //     ),
+        //   ),
         StaggeredGridTile.count(
             crossAxisCellCount: 4,
             mainAxisCellCount: 1,
