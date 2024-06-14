@@ -87,6 +87,11 @@ extension GradeCalculations on List<Grade> {
     return percentage.isNaN ? 0 : percentage;
   }
 
+  double getAmountOfInsufficient() {
+    double amount = (useable.length - (useable.where((grade) => grade.isSufficient).length)).roundToDouble();
+    return amount.isNaN ? 0 : amount;
+  }
+
   Grade? getHighest() {
     return numericalGrades.isNotEmpty
         ? numericalGrades.reversed
@@ -250,7 +255,7 @@ extension GradeCalculations on List<Grade> {
       Fact(
           title:
               AppLocalizations.of(context)!.amountOfInsufficient.capitalize(),
-          value: where((grade) => !grade.sufficient).length.toString()),
+          value: getAmountOfInsufficient().displayNumber()),
       if (isNotEmpty)
         Fact(
             title: AppLocalizations.of(context)!.averageWeight,
